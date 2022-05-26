@@ -81,14 +81,29 @@ $(document).ready(function () {
 
         $('.filter-list-items').click(function () {
             let filterListItem = this;
-            let filterValue = filterListItem.innerText;
+            let filterValue = filterListItem.id;
             countries = fullCountryData;
             countries = filterCountry(filterValue, countries);
             sortCountry(sortValue, countries);
-            appendCard(countries);
             $('#filter-dropdown').slideUp(); //remove filter dropdown
             filterVisible = false; // update filter dropdown state
-            console.log(filterValue);
+            setTimeout(() => {
+                appendCard(countries);
+            }, 1000);
+            // console.log(filterValue);
+        })
+
+        $('.sort-list-items').click(function () {
+            let sortListItem = this;
+            let sortValue = sortListItem.id;
+            sortCountry(sortValue, countries);
+            $('#sort-dropdown').slideUp(); //remove sort dropdown
+            sortVisible = false; // update sort dropdown state
+            setTimeout(() => {
+                appendCard(countries);
+            }, 1000);
+            // console.log('running');
+            // console.log({sortListItem});
         })
 
         function appendCard(countryArray) {
@@ -106,10 +121,45 @@ $(document).ready(function () {
                 } else {
                     countryCapital = 'N/A'; // if capital is unavaliable, equate to N/A
                 }
+
+                
+                countryPopulation = countryPopulation.toString();
+                let populationStringLength = countryPopulation.length;
+                if (populationStringLength <= 3) {
+                    // continue;                    
+                } else if (populationStringLength <= 6) {
+
+                    var b = ",";
+                    var position = populationStringLength - 3;
+                    countryPopulation = [countryPopulation.slice(0, position), b, countryPopulation.slice(position)].join('');
+
+                } else if (populationStringLength <= 9) {
+                    var b = ",";
+                    
+                    var position = populationStringLength - 3;
+                    countryPopulation = [countryPopulation.slice(0, position), b, countryPopulation.slice(position)].join('');
+                    
+                    position = populationStringLength - 6;
+                    countryPopulation = [countryPopulation.slice(0, position), b, countryPopulation.slice(position)].join('');
+                    
+                } else if (populationStringLength <= 12) {
+                    
+                    var b = ",";
+                    var position = populationStringLength - 3;
+                    countryPopulation = [countryPopulation.slice(0, position), b, countryPopulation.slice(position)].join('');
+                    
+                    position = populationStringLength - 6;
+                    countryPopulation = [countryPopulation.slice(0, position), b, countryPopulation.slice(position)].join('');
+                    
+                    position = populationStringLength - 9;
+                    countryPopulation = [countryPopulation.slice(0, position), b, countryPopulation.slice(position)].join('');
+                    
+                    
+                }
                 // card element
                 card = `<div class="card">
                     <div class="img-wrapper">
-                        <img src="${countryFlag}" alt="flag">
+                        <img src="${countryFlag}" alt="flag" loading="lazy">
                     </div>
                     <div class="text-wrapper">
                         <h3>${countryName}</h3>
