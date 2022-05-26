@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <span>Where in the world?</span>
+        <button type="button">
+            <ion-icon name="moon"></ion-icon>
+            Dark Mode
+        </button>
+    </nav>
+    <form id="search-form">
+        <div class="search-input-wrapper">
+            <!-- <div class="search-icon-wrapper">
+            </div> -->
+            <ion-icon name="search-outline" class="search-icon"></ion-icon>
+            <input type="search" name="" id="search" placeholder="Search for a country...">
+        </div>
+        <div class="filter-wrapper">
+            <button type="button" id="filter">
+                Filter by Region
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </button>
+            <button type="button" id="sort">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+                Sort by
+            </button>
+            <ul id="filter-dropdown">
+                <li class="filter-list-items" id="All">All</li>
+                <li class="filter-list-items" id="Africa">Africa</li>
+                <li class="filter-list-items" id="Americas">Americas</li>
+                <li class="filter-list-items" id="Antarctic">Antarctic</li>
+                <li class="filter-list-items" id="Asia">Asia</li>
+                <li class="filter-list-items" id="Europe">Europe</li>
+                <li class="filter-list-items" id="Oceania">Oceania</li>
+            </ul>   
+            <ul id="sort-dropdown">
+                <li>Name, A to Z</li>
+                <li>Name, Z to A</li>
+                <li>Population, Largest first</li>
+                <li>Population, Smalest first</li>
+            </ul>   
+        </div>
+    </form>
+    <main>
+        <!-- <div class="card">
+            <div class="img-wrapper">
+                <img src="flag.jpg" alt="flag">
+            </div>
+            <div class="text-wrapper">
+                <h3>Country</h3>
+                <section>
+                    <div><h4>Population:</h4><span>999999</span> </div>
+                    <div><h4>Region:</h4><span>Lorem</span> </div>
+                    <div><h4>Capital:</h4><span>Lorem</span> </div>
+                </section>
+            </div>
+        </div> -->
+    </main>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="main.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

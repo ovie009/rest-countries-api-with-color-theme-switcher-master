@@ -1,0 +1,244 @@
+:root{
+    --lightModeBackground : hsl(0, 0%, 98%);
+    --lightModeElements: hsl(0, 0%, 100%);
+    --lightModeInput: hsl(0, 0%, 52%);
+    --lightModeText: hsl(200, 15%, 8%);
+    --darkModeBackground : hsl(207, 26%, 17%);
+    --darkModeElements: hsl(209, 23%, 22%);
+    --darkModeInput: hsl(209, 23%, 22%);
+    --darkModeText: hsl(0, 0%, 100%);
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: var(--darkModeBackground);
+    color: var(--darkModeText);
+    box-sizing: border-box;
+}
+
+body *{
+    background-color: var(--darkModeElements);
+    color: var(--darkModeText);
+    box-sizing: border-box;
+}
+
+nav{
+    color: var(--darkModeText);
+    background-color: var(--darkModeElements);
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+nav span{
+    font-weight: 800;
+}
+
+nav button{
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+ion-icon{
+    color: var(--darkModeText);
+    font-size: 1.2em;
+    /* margin-inline: 5px; */
+}
+
+#search-form{
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+    background-color: transparent;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 40px;
+    justify-content: space-between;
+}
+
+.search-input-wrapper{
+    /* margin-bottom: 20px; */
+    width: 100%;
+    max-width: 500px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 30px;
+    gap: 10px;
+    border-radius: 5px;
+}
+
+#search{
+    width: 90%;
+    height: 100%;
+    padding: 5px 10px;
+    border: none;
+}
+
+#search::placeholder{
+    color: hsla(0, 0%, 100%, 0.748);
+}
+
+#search:focus{
+    outline: none;
+}
+
+.search-icon{
+    width: 10%;
+    /* font-size: 1.2em; */
+}
+
+.filter-wrapper{
+    background-color: transparent;
+    width: 100%;
+    max-width: 500px;
+    height: 50px;
+    /* margin-top: 20px; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+#filter{
+    height: 100%;
+    width: 45%;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    color: var(--darkModeText);
+}
+
+#filter-dropdown{
+    border-radius: 5px;
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 45%;
+    height: fit-content;
+    padding: 15px 20px;
+    list-style-type: none;
+    flex-flow: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    display: flex;
+    box-sizing: unset;
+    display: none;
+}
+
+#filter-dropdown li{
+    width: 100%;
+    text-align: left;
+    padding: 5px;
+}
+
+#filter-dropdown li:hover{
+    background-color: teal;
+}
+
+#sort{
+    height: 100%;
+    width: 45%;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    color: var(--darkModeText);
+    position: relative;
+}
+
+#sort-dropdown{
+    border-radius: 5px;
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 55%;
+    min-width: 250px;
+    height: fit-content;
+    padding: 15px 20px;
+    list-style-type: none;
+    flex-flow: column;
+    align-items: flex-start;
+    box-sizing: unset;
+    justify-content: space-evenly;
+    display: flex;
+    display: none;
+}
+
+#sort-dropdown li{
+    width: 100%;
+    text-align: right;
+    padding: 5px;
+}
+
+#sort-dropdown li:hover{
+    background-color: teal;
+}
+
+main{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: transparent;
+    padding-block: 20px 80px;
+    gap: 50px;
+}
+
+.card{
+    max-width: 300px;
+    width: 75%;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.img-wrapper{
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    height: 200px;
+}
+
+.img-wrapper img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.text-wrapper{
+    height: 200px;
+    padding: 10px 30px 30px;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    border-radius: 0 0 5px 5px;
+}
+
+.text-wrapper section > div{
+    display: flex;
+    gap: 10px;
+    margin-block: 5px;
+}
+
+.text-wrapper div > h4{
+    font-weight: 600;
+}
+
+
