@@ -200,6 +200,19 @@ main{
     background-color: transparent;
     padding-block: 20px 80px;
     gap: 50px;
+    /* position: relative; */
+}
+
+.scroll-up{
+    position: fixed;
+    right: 20px;
+    top: 90vh;
+    border: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+    display: none;
 }
 
 .card{
@@ -219,6 +232,7 @@ main{
     height: 100%;
     width: 100%;
     object-fit: cover;
+    border-radius: 5px 5px 0 0;
 }
 
 .text-wrapper{

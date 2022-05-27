@@ -122,7 +122,7 @@ $(document).ready(function () {
                     countryCapital = 'N/A'; // if capital is unavaliable, equate to N/A
                 }
 
-                
+
                 countryPopulation = countryPopulation.toString();
                 let populationStringLength = countryPopulation.length;
                 if (populationStringLength <= 3) {
@@ -212,5 +212,27 @@ $(document).ready(function () {
                 return countriesArray;
             }
         }
+
+        function scrollToTop() {
+            // $('nav').scrollIntoView({behavior: "smooth", block: "start"});
+            document.querySelector('nav').scrollIntoView({behavior: "smooth", block: "start"});
+        }
+        
+        $(".scroll-up").click(function(){
+            scrollToTop();
+        });
     }
 });
+
+var lastScrollTop = 0;
+// function to remove scroll-up button when scrolling down and replace it back when scrolling up 
+window.addEventListener("scroll", function(){
+    var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+    if (st > lastScrollTop){ // when scrolling down
+        document.querySelector('.scroll-up').style.display = 'none';
+    } else { // when scrolling up
+        document.querySelector('.scroll-up').style.display = 'block';
+    }
+    //if st is less than or equal to 0, let lastScrollTop be equal to 0, else let it be equal to st
+    lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+}, false);
