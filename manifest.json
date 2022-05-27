@@ -1,0 +1,14 @@
+{
+  "name": "Contries of the World",
+  "short_name": "COTW",
+  "description": "App for providing basic information about the countries of the world",
+  "icons": [
+    {
+      "src": "worldwide.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "display": "fullscreen",
+  "orientation": "portrait"
+}

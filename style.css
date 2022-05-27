@@ -206,7 +206,7 @@ main{
 .scroll-up{
     position: fixed;
     right: 20px;
-    top: 90vh;
+    top: 85vh;
     border: none;
     width: 60px;
     height: 60px;
