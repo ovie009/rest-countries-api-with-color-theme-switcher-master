@@ -19,6 +19,7 @@ $(document).ready(function () {
             loadSuccess = true; // set loadSuccess variable equal to true
             fullCountryData = JSON.parse(request.response); // equate countries varaible to JSON data
             countries = JSON.parse(request.response); // equate countries varaible to JSON data
+            console.log("🚀 ~ file: main.js ~ line 22 ~ countries", countries[69])
             
             countries = searchCountry(searchValue, countries);
             countries = filterCountry(filterValue, countries);
@@ -151,6 +152,10 @@ $(document).ready(function () {
                     countryCapital = country.capital[0]; // equate countryCapital variable top the capital in the JSON array    
                 } else {
                     countryCapital = 'N/A'; // if capital is unavaliable, equate to N/A
+                }
+
+                if (country.name.common == 'Belgium') {
+                    console.log("🚀 ~ file: main.js ~ line 158 ~ appendCard ~ country", country)
                 }
 
 
