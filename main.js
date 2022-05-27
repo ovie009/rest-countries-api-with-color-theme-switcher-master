@@ -9,6 +9,8 @@ $(document).ready(function () {
     let sortVisible = false; // variable to store visibility state of sort dropdown
     let sortValue = 'nameASC';
     let filterValue = 'All';
+    let searchValue = '';
+    let searching = false;
     // console.log(main);
     request.open("GET", "https://restcountries.com/v3.1/all"); //open API request
     request.send(); // send API request
@@ -18,6 +20,7 @@ $(document).ready(function () {
             fullCountryData = JSON.parse(request.response); // equate countries varaible to JSON data
             countries = JSON.parse(request.response); // equate countries varaible to JSON data
             
+            countries = searchCountry(searchValue, countries);
             countries = filterCountry(filterValue, countries);
             sortCountry(sortValue, countries);
             appendCard(countries);
@@ -83,6 +86,11 @@ $(document).ready(function () {
             let filterListItem = this;
             let filterValue = filterListItem.id;
             countries = fullCountryData;
+            
+            if (searching === true) {
+                countries = searchCountry(searchValue, countries);
+            } 
+            
             countries = filterCountry(filterValue, countries);
             sortCountry(sortValue, countries);
             $('#filter-dropdown').slideUp(); //remove filter dropdown
@@ -92,6 +100,29 @@ $(document).ready(function () {
             }, 1000);
             // console.log(filterValue);
         })
+
+        $('#search').on('propertychange input', function (e) {
+            var valueChanged = false;
+        
+            if (e.type=='propertychange') {
+                valueChanged = e.originalEvent.propertyName=='value';
+            } else {
+                valueChanged = true;
+            }
+            if (valueChanged) {
+                /* Code goes here */
+                // console.log('searching');
+                searchValue = $('#search').val();
+                searchValue = searchValue.charAt(0).toUpperCase() + searchValue.slice(1);
+                console.log(searchValue);
+                countries = fullCountryData;
+                countries = searchCountry(searchValue, countries);
+                sortCountry(sortValue, countries);
+                setTimeout(() => {
+                    appendCard(countries);
+                }, 1000);
+            }
+        });
 
         $('.sort-list-items').click(function () {
             let sortListItem = this;
@@ -213,6 +244,22 @@ $(document).ready(function () {
             }
         }
 
+        function searchCountry(value, countriesArray) {
+            if (value !== '') {
+                let searchedCountries = countriesArray.filter(
+                    (country) => country.name.common.startsWith(value)
+                );
+
+                // console.log(searchedCountries);
+                searching = true;
+                return searchedCountries;
+
+            } else {
+                searching = false;
+                return countriesArray;
+            }
+        }
+
         function scrollToTop() {
             // $('nav').scrollIntoView({behavior: "smooth", block: "start"});
             document.querySelector('nav').scrollIntoView({behavior: "smooth", block: "start"});
@@ -221,6 +268,9 @@ $(document).ready(function () {
         $(".scroll-up").click(function(){
             scrollToTop();
         });
+
+        // console.log(str2);
+
     }
 });
 
