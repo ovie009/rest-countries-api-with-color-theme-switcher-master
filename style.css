@@ -3,10 +3,18 @@
     --lightModeElements: hsl(0, 0%, 100%);
     --lightModeInput: hsl(0, 0%, 52%);
     --lightModeText: hsl(200, 15%, 8%);
+    --lightModeHover: lightblue;
     --darkModeBackground : hsl(207, 26%, 17%);
     --darkModeElements: hsl(209, 23%, 22%);
     --darkModeInput: hsl(209, 23%, 22%);
     --darkModeText: hsl(0, 0%, 100%);
+    --darkModeHover: teal;
+    --background : var(--darkModeBackground);
+    --elements: var(--darkModeElements);
+    --input: var(--darkModeInput);
+    --text: var(--darkModeText);
+    --hover: var(--darkModeHover); 
+    --boxShadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -17,25 +25,26 @@
 
 body{
     font-family: 'Nunito Sans', sans-serif;
-    background-color: var(--darkModeBackground);
-    color: var(--darkModeText);
+    background-color: var(--background);
+    color: var(--text);
     box-sizing: border-box;
 }
 
 body *{
-    background-color: var(--darkModeElements);
-    color: var(--darkModeText);
+    background-color: var(--elements);
+    color: var(--text);
     box-sizing: border-box;
 }
 
 nav{
-    color: var(--darkModeText);
-    background-color: var(--darkModeElements);
+    color: var(--text);
+    background-color: var(--elements);
     width: 100%;
     height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: var(--boxShadow);
     padding: 20px;
 }
 
@@ -51,7 +60,7 @@ nav button{
 }
 
 ion-icon{
-    color: var(--darkModeText);
+    color: var(--text);
     font-size: 1.2em;
     /* margin-inline: 5px; */
 }
@@ -65,6 +74,7 @@ ion-icon{
     flex-flow: row wrap;
     gap: 40px;
     justify-content: space-between;
+    /* display: none; */
 }
 
 .search-input-wrapper{
@@ -78,6 +88,7 @@ ion-icon{
     padding-inline: 30px;
     gap: 10px;
     border-radius: 5px;
+    box-shadow: var(--boxShadow);
 }
 
 #search{
@@ -88,7 +99,7 @@ ion-icon{
 }
 
 #search::placeholder{
-    color: hsla(0, 0%, 100%, 0.748);
+    color: var(--text);
 }
 
 #search:focus{
@@ -113,6 +124,7 @@ ion-icon{
 }
 
 #filter{
+    box-shadow: var(--boxShadow);
     height: 100%;
     width: 45%;
     border: none;
@@ -121,7 +133,7 @@ ion-icon{
     justify-content: space-between;
     align-items: center;
     padding: 5px 20px;
-    color: var(--darkModeText);
+    color: var(--text);
 }
 
 #filter-dropdown{
@@ -148,19 +160,20 @@ ion-icon{
 }
 
 #filter-dropdown li:hover{
-    background-color: teal;
+    background-color: var(--hover);
 }
 
 #sort{
     height: 100%;
     width: 45%;
+    box-shadow: var(--boxShadow);
     border: none;
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px 20px;
-    color: var(--darkModeText);
+    color: var(--text);
     position: relative;
 }
 
@@ -189,7 +202,7 @@ ion-icon{
 }
 
 #sort-dropdown li:hover{
-    background-color: teal;
+    background-color: var(--hover);
 }
 
 main{
@@ -211,7 +224,7 @@ main{
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--boxShadow);
     display: none;
 }
 
@@ -219,7 +232,9 @@ main{
     max-width: 300px;
     width: 75%;
     border-radius: 5px;
-    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+    box-shadow: var(--boxShadow);
+    /* display: none; */
 }
 
 .img-wrapper{
@@ -255,4 +270,174 @@ main{
     font-weight: 600;
 }
 
+.country, .country * {
+    background-color: transparent;
+}
 
+.country{
+    justify-content: center;
+    width: 100%;
+    height: fit-content;
+    flex-flow: column;
+    align-items: center;
+    padding: 20px 30px;
+    gap: 50px;
+    display: flex;
+    display: none;
+}
+
+.back-button-wrapper{
+    width: 100%;
+    height: 35px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#back-button{
+    height: 100%;
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    background-color: var(--elements);
+    border-radius: 5px;
+    box-shadow: var(--boxShadow);
+}
+
+.country-details-wrapper{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 50px;
+    /* background-color: red; */
+    min-height: 50vh;
+    height: fit-content;
+}
+
+.country-flag-wrapper{
+    width: 100%;
+    max-width: 600px;
+    /* height: max(250px, 100%); */
+    min-height: 250px;
+    /* height: 100%; */
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+}
+
+.country-flag{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.country-info-wrapper{
+    width: 100%;
+    min-height: 45vh;
+    padding: 20px;
+    flex-grow: inherit;
+    max-width: 700px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    gap: 40px;
+    /* background-color: blue; */
+}
+
+.country-info-wrapper > h3{
+    font-size: 1.5em;
+}
+
+.details-wrapper{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 50px;
+}
+
+.details-wrapper section{
+    width: 100%;
+    max-width: 300px;
+    gap: 10px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+.details-wrapper section div{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.disable-wrapping{
+    white-space: nowrap;
+}
+
+.details-wrapper section div h4{
+    font-weight: 600;
+}
+
+.border-section{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    /* background-color: palegoldenrod; */
+}
+
+.border-heading{
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+.border-countries-wrapper{
+    min-width: 70%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+    height: fit-content;
+    gap: 10px;
+}
+
+.border-countries-wrapper button{
+    height: 30px;
+    width: 100px;
+    font-size: .7em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    background-color: var(--elements);
+    border-radius: 3px;
+    box-shadow: var(--boxShadow);
+}
+
+/* change autofill background color */
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+input:-webkit-autofill, 
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: none;
+  -webkit-text-fill-color: white;
+  box-shadow: 0 0 0px 1000px var(--elements) inset;
+}

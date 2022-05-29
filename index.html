@@ -15,9 +15,12 @@
 <body>
     <nav>
         <span>Where in the world?</span>
-        <button type="button">
-            <ion-icon name="moon"></ion-icon>
-            Dark Mode
+        <button type="button" onclick="switchTheme()" id="theme-switcher">
+            <ion-icon name="sunny"></ion-icon>
+            Light Mode
+            
+            <!-- <ion-icon name="moon"></ion-icon>
+            Dark Mode -->
         </button>
     </nav>
     <form id="search-form">
@@ -68,6 +71,44 @@
                 </section>
             </div>
         </div> -->
+        <section class="country">
+            <div class="back-button-wrapper">
+                <button id="back-button">
+                    <ion-icon name="arrow-back-sharp"></ion-icon>
+                    Back
+                </button>
+            </div>
+            <div class="country-details-wrapper">
+                <div class="country-flag-wrapper">
+                    <img src="flag.jpg" alt="country flag" class="country-flag">
+                </div>
+                <div class="country-info-wrapper">
+                    <h3>Country</h3>
+                    <div class="details-wrapper">
+                        <section>
+                            <div><h4>Native Name:</h4><span>Lorem</span> </div>
+                            <div><h4>Population:</h4><span>999999</span> </div>
+                            <div><h4>Region:</h4><span>Lorem</span> </div>
+                            <div><h4>Sub Region:</h4><span>Lorem Ipsum</span> </div>
+                            <div><h4>Capital:</h4><span>Lorem</span> </div>
+                        </section>
+                        <section>
+                            <div><h4>Top Level Domain:</h4><span>Lorem</span> </div>
+                            <div><h4>Curriencies:</h4><span>Lorem Ipsum</span> </div>
+                            <div><h4>Language:</h4><span>Lorem, Lorem, Lorem</span> </div>
+                        </section>
+                    </div>
+                    <section class="border-section">
+                        <h4 class="border-heading">Border Countires</h4>
+                        <div class="border-countries-wrapper">
+                            <button type="button">Lorem</button>
+                            <button type="button">Lorem</button>
+                            <button type="button">Lorem</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
     </main>
     <button type="button" class="scroll-up">
         <ion-icon name="caret-up-outline" class="up-icon"></ion-icon>
