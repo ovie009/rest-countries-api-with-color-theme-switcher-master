@@ -298,7 +298,7 @@ function appendCountry(country) {
         countries = fullCountryData;
         for (let index = 0; index < borderList.length; index++) {
             borderCountryName = selectCountryNameFromCode(borderList[index], countries);
-            countryBorders += `<button type="button" onclick="clickCard('${borderList[index]}')">${borderCountryName}</button>`;
+            countryBorders += `<button class="border-buttons" type="button" onclick="clickCard('${borderList[index]}')">${borderCountryName}</button>`;
         }
     } else { // if copuntry has no border
         countryBorders = '<span>N/A</span>'; // if capital is unavaliable, equate to N/A
@@ -347,70 +347,96 @@ function appendCountry(country) {
 function changeView(type, country) {
     // if type is equal to country i.e country is selected
     if (type === 'country') {
+        // remove cards
         $('.card').remove();
+        // hide filter and sort forms
         $('form').css('display', 'none');
+        // show country section
         $('.country').css('display', 'flex');
-        viewCountry = true;
+        // append country content
         appendCountry(country);
+        // set viewCountry variable to true
+        viewCountry = true;
     } else {
+        // hide form
         $('form').css('display', 'flex');
+        // show form
         $('.country').css('display', 'none');
+        // equate country variable to country value passed into the fuinction
         countries = country;
+        // search country, if search input field has a data
         countries = searchCountry(searchValue, countries);
+        // filter the corresponding country result
         countries = filterCountry(filterValue, countries);
+        // sort the corresponding country result
         sortCountry(sortValue, countries);
-        viewCountry = false;
+        // append card
         appendCard(countries);
+        // set viewCountry variable to false
+        viewCountry = false;
     }
 }
 
+// if back button is clicked
 $("#back-button").click(function(){
+    // run changeView function
     changeView('card', fullCountryData);
 });
 
+// function to convert population figure to string
+// with commas after every 3 digits from behind
 function stringifyPopulation(num) {
-    
+    // first convert number to string
     num = num.toString();
-    let firstCommaPosition = 3;
-    let secondCommaPosition = 6;
-    let thirdCommaPosition = 9;
-    let populationStringLength = num.length;
-    if (populationStringLength <= 3) {
-        // continue;                    
-    } else if (populationStringLength <= 6) {
-
-        var b = ",";
+    let firstCommaPosition = 3; // first comma position
+    let secondCommaPosition = 6; // second comma position
+    let thirdCommaPosition = 9; // third comma position
+    let populationStringLength = num.length; // get length of string
+    let b = ","; // comma to be inserted in string
+    if (populationStringLength <= 3) { // if number is less than 1000
+        console.log('less than a thousand'); // do nothing significant
+        // return the number as string
+        return num;
+    } else if (populationStringLength <= 6) { // if number is less than 1,000,000
+        // insert comman after 3 digit from behind
         var position = populationStringLength - firstCommaPosition;
         num = [num.slice(0, position), b, num.slice(position)].join('');
+        // return number as string with one comma
         return num;
         
-    } else if (populationStringLength <= 9) {
-        var b = ",";
+    } else if (populationStringLength <= 9) { // if number is less than 1,000,000,000
         
+        // insert comman after 3 digit from behind
         var position = populationStringLength - firstCommaPosition;
         num = [num.slice(0, position), b, num.slice(position)].join('');
         
+        // insert comman after 6 digit from behind
         position = populationStringLength - secondCommaPosition;
         num = [num.slice(0, position), b, num.slice(position)].join('');
+        // return number as string with two commas
         return num;
         
-    } else if (populationStringLength <= 12) {
+    } else if (populationStringLength <= 12) { // if number is less than 1,000,000,000,000
         
-        var b = ",";
+        // insert comman after 3 digit from behind
         var position = populationStringLength - firstCommaPosition;
         num = [num.slice(0, position), b, num.slice(position)].join('');
         
+        // insert comman after 6 digit from behind
         position = populationStringLength - secondCommaPosition;
         num = [num.slice(0, position), b, num.slice(position)].join('');
         
+        // insert comman after 9 digit from behind
         position = populationStringLength - thirdCommaPosition;
         num = [num.slice(0, position), b, num.slice(position)].join('');
+        // return number as string with three commas
         return num;
         
         
     }
 }
 
+// function to append country cards
 function appendCard(countryArray) {
     $('.card').remove()            
     // loop through countires array
@@ -460,103 +486,144 @@ function appendCard(countryArray) {
     });
 }
 
+// function to sort country, require sortvalue and countries array
 function sortCountry(value, countriesArray) {
-    if (value === 'nameASC') {
+    
+    if (value === 'nameASC') { // sort according to ascending order of names
         countriesArray.sort((a, b) => {
             if (a.name.common < b.name.common) return -1;
             return 1;
         });
 
-    } else if (value === 'nameDESC') {
+    } else if (value === 'nameDESC') { // sort according to descending order of names
         countriesArray.sort((a, b) => {
             if (a.name.common > b.name.common) return -1;
             return 1;
         });
 
-    } else if (value === 'populationASC') {
+    } else if (value === 'populationASC') { // sort according to ascending order of population
         countriesArray.sort((a, b) => a.population - b.population);
 
-    } else if (value === 'populationDESC') {
+    } else if (value === 'populationDESC') { // sort according to descending order of names
         countriesArray.sort((a, b) => b.population - a.population);
         
-    } else {
+    } else { //else return
         return;
     }
 }
 
+// function to filter country, require filter value and countries array
 function filterCountry(value, countriesArray) {
+    // if value is not equal to 'All'
     if (value !== 'All') {
+        // filter country according to the filter value received
         let filteredCountries = countriesArray.filter(
             (country) => country.region == value
         );
 
-        // console.log(filteredCountries);
+        // return the filtered array
         return filteredCountries;
 
-    } else {
+    } else { // if value is equal to 'All', do not filter
+        // return country value like it is.
         return countriesArray;
     }
 }
 
+// sfunction to search country
 function searchCountry(value, countriesArray) {
+    // if search field is not empty
     if (value !== '') {
+        // filter country array according to search input
         let searchedCountries = countriesArray.filter(
             (country) => country.name.common.startsWith(value)
         );
 
-        // console.log(searchedCountries);
+        // set searching variable as true
+        // this variable would be used to control to filtered result
+        // whether to filter whole country data or searched country data 
         searching = true;
+
+        // return searched country
         return searchedCountries;
 
-    } else {
+    } else { // else do not search
+        // searching is equal to false
         searching = false;
+        // return country array
         return countriesArray;
     }
 }
 
+// function to scroll to top
 function scrollToTop() {
-    // $('nav').scrollIntoView({behavior: "smooth", block: "start"});
+    // scroll to nav
     document.querySelector('nav').scrollIntoView({behavior: "smooth", block: "start"});
 }
 
-let theme = 'darkMode'
+// let themme be equall to dark mode by default
+let theme;
 function switchTheme() {
-    console.log('Theme Sitching')
+    // console.log('Theme Sitching')
+    // select theme buttons
     let themeButton = $('#theme-switcher');
+    theme = getCookie('theme');
+    // remove children elements in theme button
     themeButton.empty()
-    if (theme === 'darkMode') {
-        theme = 'lightMode';
+    if (theme === 'darkMode') { // if its currently on dark mode
+        theme = 'lightMode'; // set theme controller variable as 'lightMode'
+        // content to be added to theme button
         let content = `<ion-icon name="moon"></ion-icon>Dark Mode`;
+        // append content to theme button
         themeButton.append(content);
     } else {
-        theme = 'darkMode';
+        theme = 'darkMode'; // set theme controller variable as 'darkMode'
+        // content to be added to theme button
         let content = `<ion-icon name="sunny"></ion-icon>Light Mode`;
+        // append content to theme button
         themeButton.append(content);
     }
+    
+    setThemeColors(theme);
+    setCookie('theme', theme, 30);
+    
+    console.log(getCookie('theme'));
+}
 
+function setThemeColors(theme) {
+    // select background color of desired theme
     background = myFunction_get(`${theme}Background`);
+    // set background color of the page
     myFunction_set('background', background);
-
+    
+    // select element backgound color of desired theme
     elements = myFunction_get(`${theme}Elements`);
+    // set element background color of the page
     myFunction_set('elements', elements);
     
+    // select input backgound color of desired theme
     inputs = myFunction_get(`${theme}Inputs`);
+    // set input background color of the page
     myFunction_set('inputs', inputs);
     
+    // select text color of desired theme
     text = myFunction_get(`${theme}Text`);
+    // set text color of the page
     myFunction_set('text', text);
-
+    
+    // select hover background color of desired theme
     hover = myFunction_get(`${theme}Hover`);
+    // set hover background color of the page
     myFunction_set('hover', hover);
 }
 
 // Get the root element
-var r = document.querySelector(':root');
-let background;
-let elements;
-let inputs;
-let text;
-let hover;
+var r = document.querySelector(':root'); // css root variable
+let background; // css body background color varaible
+let elements; // css elements background color varaible
+let inputs; // css inputs background color varaible
+let text; // css text color varaible
+let hover; // css hover background color varaible for dropdowns
 
 // Create a function for getting a variable value
 function myFunction_get(variableName) {
@@ -571,3 +638,53 @@ function myFunction_set(variableName, variableValue) {
   // Set the value of variable --blue to another value (in this case "lightblue")
   r.style.setProperty(`--${variableName}`, variableValue);
 }
+
+// function to setCookie
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+// functionto get cookie
+function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+// functionto check cookie
+function checkCookie() {
+    let theme = getCookie("theme");
+    if (theme == "") {
+        theme = 'darkMode';
+        console.log('running');
+        setCookie('theme', theme, 30)
+    }
+    setThemeColors(theme);
+
+    if (theme === 'lightMode') {
+        // select theme buttons
+        let themeButton = $('#theme-switcher');
+        theme = getCookie('theme');
+        // remove children elements in theme button
+        themeButton.empty()
+        // content to be added to theme button
+        let content = `<ion-icon name="moon"></ion-icon>Dark Mode`;
+        // append content to theme button
+        themeButton.append(content);
+    }
+}
+
+// check for cookies
+checkCookie();

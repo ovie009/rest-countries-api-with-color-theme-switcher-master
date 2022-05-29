@@ -121,6 +121,7 @@ ion-icon{
     justify-content: space-between;
     align-items: center;
     position: relative;
+    z-index: 10;
 }
 
 #filter{
@@ -429,6 +430,8 @@ main{
     background-color: var(--elements);
     border-radius: 3px;
     box-shadow: var(--boxShadow);
+    box-sizing: unset;
+    padding: 5px 10px;
 }
 
 /* change autofill background color */
