@@ -345,6 +345,7 @@ function appendCountry(country) {
 // fnction to change view between single country and list of countries
 // displayed in a row/columns of cards
 function changeView(type, country) {
+    // if type is equal to country i.e country is selected
     if (type === 'country') {
         $('.card').remove();
         $('form').css('display', 'none');
