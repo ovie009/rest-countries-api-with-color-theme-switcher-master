@@ -46,6 +46,7 @@ nav{
     align-items: center;
     box-shadow: var(--boxShadow);
     padding: 20px;
+    padding-inline: max(20px, 10%);
 }
 
 nav span{
@@ -291,6 +292,8 @@ main{
     gap: 50px;
     display: flex;
     display: none;
+    /* max-width: 1700px; */
+    padding-inline: max(20px, 10%);
 }
 
 .back-button-wrapper{
@@ -335,6 +338,7 @@ main{
     /* background-color: red; */
     display: flex;
     align-items: center;
+    box-shadow: var(--boxShadow);
 }
 
 .country-flag{
