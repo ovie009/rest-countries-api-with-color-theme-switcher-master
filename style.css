@@ -46,7 +46,7 @@ nav{
     align-items: center;
     box-shadow: var(--boxShadow);
     padding: 20px;
-    padding-inline: max(20px, 10%);
+    /* padding-inline: max(20px, 10%); */
 }
 
 nav span{

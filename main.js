@@ -353,6 +353,7 @@ function changeView(type, country) {
         $('form').css('display', 'none');
         // show country section
         $('.country').css('display', 'flex');
+        $('nav').css('paddingInline', 'max(20px, 10%)');
         // append country content
         appendCountry(country);
         // set viewCountry variable to true
@@ -362,6 +363,7 @@ function changeView(type, country) {
         $('form').css('display', 'flex');
         // show form
         $('.country').css('display', 'none');
+        $('nav').css('paddingInline', '20px');
         // equate country variable to country value passed into the fuinction
         countries = country;
         // search country, if search input field has a data
