@@ -232,19 +232,23 @@ function clickCard(code) {
     changeView('country', selectedCountry)
 }
 
+// function to append country details if country is selected
 function appendCountry(country) {
     console.log("🚀 ~ file: main.js ~ line 282 ~ appendCountry ~ country", country)
     
     let countryFlag = country[0].flags.svg; // country flag
     let countryName = country[0].name.common; // country name
     let countryPopulation = country[0].population; // country population
-    countryPopulation = stringifyPopulation(countryPopulation);
+    // convert population to string and insert commas after every 3 digits from behind
+    countryPopulation = stringifyPopulation(countryPopulation); 
     let countryRegion = country[0].region; // couintry region
     let countrySubregion = country[0].subregion; // couintry subregion
     let countryCapital; // country capital
     let countryTld = country[0].tld[0]; // couintry top level domain
 
     let countryNativeName; // country native name
+
+    // block of code to select county native name, because some countries have multiple native names
     let nativeNameLanguage = Object.keys(country[0].name.nativeName);
     for (let index = 0; index < nativeNameLanguage.length; index++) {
         if (index === 0) {
@@ -255,6 +259,8 @@ function appendCountry(country) {
     }
 
     let countryCurrency; // currency currency
+
+    // block of code to select county currency, because some countries have multiple currencies
     let currienciesList = Object.keys(country[0].currencies);
     for (let index = 0; index < currienciesList.length; index++) {
         if (index === 0) {
@@ -265,6 +271,8 @@ function appendCountry(country) {
     }
 
     let countryLanguages; // currency currency
+
+    // block of code to select county language, because some countries have multiple languages
     let languageList = Object.keys(country[0].languages);
     for (let index = 0; index < languageList.length; index++) {
         if (index === 0) {
@@ -282,7 +290,7 @@ function appendCountry(country) {
         countryCapital = 'N/A'; // if capital is unavaliable, equate to N/A
     }
 
-    let countryBorders = '';
+    let countryBorders = ''; // border countries
     // checking if country has a boarder country
     if (country[0].borders) { // if country has border COUNTRIES
         let borderList = country[0].borders;
@@ -292,14 +300,13 @@ function appendCountry(country) {
             borderCountryName = selectCountryNameFromCode(borderList[index], countries);
             countryBorders += `<button type="button" onclick="clickCard('${borderList[index]}')">${borderCountryName}</button>`;
         }
-    } else {
+    } else { // if copuntry has no border
         countryBorders = '<span>N/A</span>'; // if capital is unavaliable, equate to N/A
     }
 
-
-
-
+    // country details element
     let countryDetails = $('.country-details-wrapper');
+    // country element
     let countryElement = `<div class="country-flag-wrapper">
         <img src="${countryFlag}" alt="country flag" class="country-flag">
     </div>
@@ -328,11 +335,15 @@ function appendCountry(country) {
             </div>
         </section>
     </div>`;
+    // remove any present country details
     $('.country-flag-wrapper').remove();
     $('.country-info-wrapper').remove();
+    // add new country details
     countryDetails.append(countryElement);
 }
 
+// fnction to change view between single country and list of countries
+// displayed in a row/columns of cards
 function changeView(type, country) {
     if (type === 'country') {
         $('.card').remove();
