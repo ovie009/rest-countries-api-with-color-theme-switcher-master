@@ -6,11 +6,11 @@ let main = $('main'); // main tag varaible
 let loadSuccess = false; // variable to store the load status of API
 let filterVisible = false; // variable to store visibility state of filter dropdown
 let sortVisible = false; // variable to store visibility state of sort dropdown
-let sortValue = 'nameASC';
-let filterValue = 'All';
-let searchValue = '';
-let searching = false;
-let viewCountry = false;
+let sortValue = 'nameASC'; // default sort value
+let filterValue = 'All'; // default filter value
+let searchValue = ''; // default search value
+let searching = false; // value to detect if user ios currently searching
+let viewCountry = false; // // value to detect if user has clicked to view on a country
 $(document).ready(function () {
     const request = new XMLHttpRequest();
     // console.log(main);
@@ -85,55 +85,79 @@ $(document).ready(function () {
             }
         });
 
+        // if any of the items in the filter dropdown is clicked
         $('.filter-list-items').click(function () {
-            let filterListItem = this;
-            let filterValue = filterListItem.id;
-            countries = fullCountryData;
+            let filterListItem = this; // select the element that was clicked
+            let filterValue = filterListItem.id; // select its id
+            // the id is equall to the regions in the country array
+            countries = fullCountryData; // reset country value
             
+            // if searching is true
             if (searching === true) {
+                // let countries varable be equall to 
+                // the searched resuilt and not full country data
                 countries = searchCountry(searchValue, countries);
             } 
             
+            // now filter the provided list of countires
             countries = filterCountry(filterValue, countries);
+            // sort the filtered result according to the preselected sortValue
             sortCountry(sortValue, countries);
             $('#filter-dropdown').slideUp(); //remove filter dropdown
             filterVisible = false; // update filter dropdown state
             setTimeout(() => {
+                // appedn countries
                 appendCard(countries);
             }, 1000);
-            // console.log(filterValue);
         })
 
+        //  oninput in search input field, run this function
         $('#search').on('propertychange input', function (e) {
+            // variable to detect change in value
             var valueChanged = false;
         
+            // if value is unchanged
             if (e.type=='propertychange') {
                 valueChanged = e.originalEvent.propertyName=='value';
-            } else {
+            } else { // if value is changed
+                //  set valueChanged as true
                 valueChanged = true;
             }
+
+            // run block opf code if valueChanged is true
             if (valueChanged) {
                 /* Code goes here */
-                // console.log('searching');
+                // select the value in the search field
                 searchValue = $('#search').val();
+                // convert the inputed string to lower case
                 searchValue = searchValue.toLowerCase();
+                // convert the input string to capitalize 
+                // i.e only first letter is in uppercase
                 searchValue = searchValue.charAt(0).toUpperCase() + searchValue.slice(1);
+                // console log search value
                 console.log(searchValue);
+                // resetting country data, so the search is performed in the full data
                 countries = fullCountryData;
+                // search countries
                 countries = searchCountry(searchValue, countries);
                 sortCountry(sortValue, countries);
+                // wait 1 second and append search result
                 setTimeout(() => {
+                    // append country as a card
                     appendCard(countries);
                 }, 1000);
             }
         });
 
+        // if any of the sort list items is clicked
         $('.sort-list-items').click(function () {
-            let sortListItem = this;
-            let sortValue = sortListItem.id;
-            sortCountry(sortValue, countries);
+            let sortListItem = this; // select clicked element
+            let sortValue = sortListItem.id; // selct element id
+            // where id is equal to the sort value
+            sortCountry(sortValue, countries); // sort countries
             $('#sort-dropdown').slideUp(); //remove sort dropdown
             sortVisible = false; // update sort dropdown state
+            // append card of sorted countries after 1 second
             setTimeout(() => {
                 appendCard(countries);
             }, 1000);
@@ -141,20 +165,18 @@ $(document).ready(function () {
             // console.log({sortListItem});
         })
 
+        // if scroll up button is clicked
         $(".scroll-up").click(function(){
+            // run function scroll to top
             scrollToTop();
         });
-        // console.log(str2);
-
-        // console.log(selectCountryNameFromCode('NGA', fullCountryData))
-
-        
     }
 });
 
-var lastScrollTop = 0;
 // function to remove scroll-up button when scrolling down and replace it back when scrolling up 
+var lastScrollTop = 0; // variable to store scroll height
 window.addEventListener("scroll", function(){
+    // if selected country page is not in view, proceed with the function
     if (viewCountry === false) {
         var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
         if (st > lastScrollTop){ // when scrolling down
@@ -164,36 +186,48 @@ window.addEventListener("scroll", function(){
         }
         //if st is less than or equal to 0, let lastScrollTop be equal to 0, else let it be equal to st
         lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-    } else {
+
+    } else { // if selected country page is in view, dont display the button
         document.querySelector('.scroll-up').style.display = 'none';
     }
 }, false);
 
+// select country be cca3 code (a unique code for each country)
 function selectCountryByCode(code, countriesArray) {
 
+    // filter country according to code passed into the function
     selectedCountry = countriesArray.filter(
         (country) => country.cca3 === code
     );
 
+    // console selected country data
     console.log(selectedCountry)
+    // return the selected country
     return selectedCountry;
 
 }
 
+// function to select country name with country code
 function selectCountryNameFromCode(code, countriesArray) {
+    // country name
     let countryName;
+    // filter country according to country code
+    // a single country data should be returned
     let countryByCode = countriesArray.filter(
         (country) => country.cca3 === code
     );
 
+    // assign country name value
     countryName = countryByCode[0].name.common;
+    // return country name
     return countryName;
 
 }
 
+// if a card is clicked
 function clickCard(code) {
-    // console.log('running');
     // console.log("🚀 ~ file: main.js ~ line 144 ~ code", code)
+    // select country by the code passed into the function
     selectedCountry = selectCountryByCode(code, countries);
     changeView('country', selectedCountry)
 }
@@ -259,7 +293,7 @@ function appendCountry(country) {
             countryBorders += `<button type="button" onclick="clickCard('${borderList[index]}')">${borderCountryName}</button>`;
         }
     } else {
-        countryCapital = 'N/A'; // if capital is unavaliable, equate to N/A
+        countryBorders = '<span>N/A</span>'; // if capital is unavaliable, equate to N/A
     }
 
 

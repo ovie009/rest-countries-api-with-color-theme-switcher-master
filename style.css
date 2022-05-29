@@ -258,6 +258,7 @@ main{
     align-items: flex-start;
     justify-content: space-around;
     border-radius: 0 0 5px 5px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .text-wrapper section > div{
