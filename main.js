@@ -1,6 +1,7 @@
 let countries; // variable to store countries
 let selectedCountry;  // variable to store the selected country being displayed
-let fullCountryData;
+let fullCountryData; // variable to store all the countries
+let numberOfCountries; // number of countries
 let card; // variable to store card element
 let main = $('main'); // main tag varaible
 let loadSuccess = false; // variable to store the load status of API
@@ -11,6 +12,9 @@ let filterValue = 'All'; // default filter value
 let searchValue = ''; // default search value
 let searching = false; // value to detect if user ios currently searching
 let viewCountry = false; // // value to detect if user has clicked to view on a country
+let loadLimit = 25; // limit of cards to load at an instant
+let lastCard; // varaible to store the last card Element in view;
+let lastCardPosition; // variable to store last card position
 $(document).ready(function () {
     const request = new XMLHttpRequest();
     // console.log(main);
@@ -20,14 +24,17 @@ $(document).ready(function () {
         if (request.status === 200) { // if status of request is successful i.e === 200
             loadSuccess = true; // set loadSuccess variable equal to true
             fullCountryData = JSON.parse(request.response); // equate countries varaible to JSON data
+            numberOfCountries = fullCountryData.length;
+            console.log("🚀 ~ file: main.js ~ line 26 ~ numberOfCountries", numberOfCountries)
             countries = JSON.parse(request.response); // equate countries varaible to JSON data
             // console.log("🚀 ~ file: main.js ~ line 22 ~ countries", countries[69])
             
-            countries = searchCountry(searchValue, countries);
-            countries = filterCountry(filterValue, countries);
-            sortCountry(sortValue, countries);
-            appendCard(countries);
-            // appendCard(countries);
+            countries = searchCountry(searchValue, countries); // search countries
+            countries = filterCountry(filterValue, countries); // filter countries
+            sortCountry(sortValue, countries); // sort countries
+            appendCard(countries, true); // append cards
+            // the boolean value controls whether the number of cards displayed 
+            //should have a limit
 
         } else {
             // if API doesn't load successfully console log the error
@@ -107,7 +114,7 @@ $(document).ready(function () {
             filterVisible = false; // update filter dropdown state
             setTimeout(() => {
                 // appedn countries
-                appendCard(countries);
+                appendCard(countries, false);
             }, 1000);
         })
 
@@ -129,23 +136,43 @@ $(document).ready(function () {
                 /* Code goes here */
                 // select the value in the search field
                 searchValue = $('#search').val();
-                // convert the inputed string to lower case
-                searchValue = searchValue.toLowerCase();
-                // convert the input string to capitalize 
-                // i.e only first letter is in uppercase
-                searchValue = searchValue.charAt(0).toUpperCase() + searchValue.slice(1);
-                // console log search value
-                console.log(searchValue);
-                // resetting country data, so the search is performed in the full data
-                countries = fullCountryData;
-                // search countries
-                countries = searchCountry(searchValue, countries);
-                sortCountry(sortValue, countries);
-                // wait 1 second and append search result
-                setTimeout(() => {
-                    // append country as a card
-                    appendCard(countries);
-                }, 1000);
+                if (searchValue == '') {
+                    // convert the inputed string to lower case
+                    searchValue = searchValue.toLowerCase();
+                    // convert the input string to capitalize 
+                    // i.e only first letter is in uppercase
+                    searchValue = searchValue.charAt(0).toUpperCase() + searchValue.slice(1);
+                    // console log search value
+                    console.log(searchValue);
+                    // resetting country data, so the search is performed in the full data
+                    countries = fullCountryData;
+                    // search countries
+                    countries = searchCountry(searchValue, countries);
+                    sortCountry(sortValue, countries);
+                    // wait 1 second and append search result
+                    setTimeout(() => {
+                        // append country as a card
+                        appendCard(countries, true);
+                    }, 1000);
+                } else {
+                    // convert the inputed string to lower case
+                    searchValue = searchValue.toLowerCase();
+                    // convert the input string to capitalize 
+                    // i.e only first letter is in uppercase
+                    searchValue = searchValue.charAt(0).toUpperCase() + searchValue.slice(1);
+                    // console log search value
+                    console.log(searchValue);
+                    // resetting country data, so the search is performed in the full data
+                    countries = fullCountryData;
+                    // search countries
+                    countries = searchCountry(searchValue, countries);
+                    sortCountry(sortValue, countries);
+                    // wait 1 second and append search result
+                    setTimeout(() => {
+                        // append country as a card
+                        appendCard(countries, false);
+                    }, 1000);
+                }
             }
         });
 
@@ -159,7 +186,7 @@ $(document).ready(function () {
             sortVisible = false; // update sort dropdown state
             // append card of sorted countries after 1 second
             setTimeout(() => {
-                appendCard(countries);
+                appendCard(countries, false);
             }, 1000);
             // console.log('running');
             // console.log({sortListItem});
@@ -179,6 +206,7 @@ window.addEventListener("scroll", function(){
     // if selected country page is not in view, proceed with the function
     if (viewCountry === false) {
         var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+        // console.log("🚀 ~ file: main.js ~ line 187 ~ window.addEventListener ~ st", st)
         if (st > lastScrollTop){ // when scrolling down
             document.querySelector('.scroll-up').style.display = 'none';
         } else { // when scrolling up
@@ -186,6 +214,15 @@ window.addEventListener("scroll", function(){
         }
         //if st is less than or equal to 0, let lastScrollTop be equal to 0, else let it be equal to st
         lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+
+        if ( (lastCardPosition - st) < 600 && loadLimit <= numberOfCountries) {
+            console.log('close to the bottom');
+            loadLimit += 25;
+            countries = searchCountry(searchValue, countries); // search countries
+            countries = filterCountry(filterValue, countries); // filter countries
+            sortCountry(sortValue, countries); // sort countries
+            appendCard(countries, true); // append cards
+        }
 
     } else { // if selected country page is in view, dont display the button
         document.querySelector('.scroll-up').style.display = 'none';
@@ -241,12 +278,18 @@ function appendCountry(country) {
     let countryPopulation = country[0].population; // country population
     // convert population to string and insert commas after every 3 digits from behind
     countryPopulation = stringifyPopulation(countryPopulation); 
-    let countryRegion = country[0].region; // couintry region
-    let countrySubregion = country[0].subregion; // couintry subregion
+    let countryRegion = country[0].region; // country region
+    let countrySubregion; // country subregion
     let countryCapital; // country capital
     let countryTld = country[0].tld[0]; // couintry top level domain
 
     let countryNativeName; // country native name
+
+    if (country[0].subregion) {
+        countrySubregion = country[0].subregion;
+    } else {
+        countrySubregion = 'N/A';
+    }
 
     // block of code to select county native name, because some countries have multiple native names
     let nativeNameLanguage = Object.keys(country[0].name.nativeName);
@@ -260,14 +303,18 @@ function appendCountry(country) {
 
     let countryCurrency; // currency currency
 
-    // block of code to select county currency, because some countries have multiple currencies
-    let currienciesList = Object.keys(country[0].currencies);
-    for (let index = 0; index < currienciesList.length; index++) {
-        if (index === 0) {
-            countryCurrency = ''+country[0].currencies[currienciesList[index]].name;
-        } else {
-            countryCurrency += ', '+country[0].currencies[currienciesList[index]].name;
+    if (country[0].currencies) { // if country has a currency
+        // block of code to select county currency, because some countries have multiple currencies
+        let currienciesList = Object.keys(country[0].currencies);
+        for (let index = 0; index < currienciesList.length; index++) {
+            if (index === 0) {
+                countryCurrency = ''+country[0].currencies[currienciesList[index]].name;
+            } else {
+                countryCurrency += ', '+country[0].currencies[currienciesList[index]].name;
+            }
         }
+    } else {
+        countryCurrency = 'N/A';
     }
 
     let countryLanguages; // currency currency
@@ -373,7 +420,7 @@ function changeView(type, country) {
         // sort the corresponding country result
         sortCountry(sortValue, countries);
         // append card
-        appendCard(countries);
+        appendCard(countries, false);
         // set viewCountry variable to false
         viewCountry = false;
     }
@@ -439,38 +486,42 @@ function stringifyPopulation(num) {
 }
 
 // function to append country cards
-function appendCard(countryArray) {
-    $('.card').remove()            
+function appendCard(countryArray, limited) {
+    $('.card').remove()
+    // if limited is true
+    if (limited === true) {
+        // apply limit
+        limit = loadLimit;
+    } else {
+        // if false apply no limit
+        limit = countryArray.length;
+    }
+    
+    console.log("🚀 ~ file: main.js ~ line 471 ~ appendCard ~ loadLimit", loadLimit)
+    console.log("🚀 ~ file: main.js ~ line 473 ~ appendCard ~ countryArray.length", countryArray.length)
+    
+    
     // loop through countires array
-    countryArray.forEach(country => {
-        let countryCode = country.cca3; // country code
-        let countryFlag = country.flags.svg; // country flag
-        let countryName = country.name.common; // country name
-        let countryPopulation = country.population; // country population
-        let countryRegion = country.region; // couintry region
+    for (let index = 0; index < limit; index++) {
+        let countryCode = countryArray[index].cca3;; // country code
+        let countryFlag = countryArray[index].flags.svg; // country flag
+        let countryName = countryArray[index].name.common; // country name
+        let countryPopulation = countryArray[index].population; // country population
+        let countryRegion = countryArray[index].region; // couintry region
         
         let countryCapital; // country capital
         // checking if country has a capital
-        if (country.capital) { // if country has capital
-            countryCapital = country.capital[0]; // equate countryCapital variable top the capital in the JSON array    
+        if (countryArray[index].capital) { // if country has capital
+            countryCapital = countryArray[index].capital[0]; // equate countryCapital variable top the capital in the JSON array    
         } else {
             countryCapital = 'N/A'; // if capital is unavaliable, equate to N/A
         }
 
-        // if (country.name.common == 'Belgium') {
-        //     console.log("🚀 ~ file: main.js ~ line 158 ~ appendCard ~ country", country);
-        //     console.log("🚀 ~ file: main.js ~ line 158 ~ appendCard ~ country", country.currencies[Object.keys(country.currencies)].name);
-            
-        //     let test = country.name;
-        //     console.log("🚀 ~ file: main.js ~ line 158 ~ appendCard ~ country", test.nativeName[Object.keys(test.nativeName)[0]].common);
-        // }
-
-
-
+        // convert population to string and insert commas
         countryPopulation = stringifyPopulation(countryPopulation);
 
         // card element
-        card = `<div class="card" id="${countryCode}" onclick="clickCard('${countryCode}')">
+        card = `<div class="card card-${index}" id="${countryCode}" onclick="clickCard('${countryCode}')">
             <div class="img-wrapper">
                 <img src="${countryFlag}" alt="flag">
             </div>
@@ -485,7 +536,21 @@ function appendCard(countryArray) {
         </div>`;
         // append card to main tag
         main.append(card);
-    });
+
+        // if (countryArray[index].name.common == 'Bouvet Island') {
+        //     console.log(countryArray[index]);
+        // }
+    }
+
+    // if limited is true, update the values used in controlling the limit
+    if (limited === true) {
+        // select the last card number, counting from 0
+        let lastCardNumber = loadLimit - 1; // last card number
+        lastCard = document.querySelector(`.card-${lastCardNumber}`); // last card element
+        lastCardPosition = lastCard.offsetTop; // last card offset from the top of viewport
+        console.log("🚀 ~ file: main.js ~ line 490 ~ appendCard ~ lastCardPosition", lastCardPosition);
+        console.log("🚀 ~ file: main.js ~ line 490 ~ appendCard ~ lastCardName", countryArray[lastCardNumber].name.common);
+    }
 }
 
 // function to sort country, require sortvalue and countries array
@@ -667,15 +732,22 @@ function getCookie(cname) {
 
 // functionto check cookie
 function checkCookie() {
+    // get cookie value of theme
     let theme = getCookie("theme");
+    // if cookie has not being set before
     if (theme == "") {
+        // let default theme be equall to darkMode
         theme = 'darkMode';
-        console.log('running');
+        // console.log('running');
+        // set cookie
         setCookie('theme', theme, 30)
     }
+    // setTheme colors
     setThemeColors(theme);
-
+    
+    // if selected theme color is light mode
     if (theme === 'lightMode') {
+        // set light mode theme switcher buttons
         // select theme buttons
         let themeButton = $('#theme-switcher');
         theme = getCookie('theme');
