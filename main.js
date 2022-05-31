@@ -215,7 +215,7 @@ window.addEventListener("scroll", function(){
         //if st is less than or equal to 0, let lastScrollTop be equal to 0, else let it be equal to st
         lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
 
-        if ( (lastCardPosition - st) < 600 && loadLimit <= numberOfCountries) {
+        if ( (lastCardPosition - st) < (window.innerHeight + 200) && loadLimit <= numberOfCountries) {
             console.log('close to the bottom');
             loadLimit += 25;
             countries = searchCountry(searchValue, countries); // search countries
@@ -400,7 +400,8 @@ function changeView(type, country) {
         $('form').css('display', 'none');
         // show country section
         $('.country').css('display', 'flex');
-        $('nav').css('paddingInline', 'max(20px, 10%)');
+        $('.nav-wrapper').css('paddingInline', 'max(20px, 10%)');
+        $('.nav-wrapper').css('maxWidth', '1900px');
         // append country content
         appendCountry(country);
         // set viewCountry variable to true
