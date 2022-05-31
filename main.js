@@ -472,7 +472,7 @@ function appendCard(countryArray) {
         // card element
         card = `<div class="card" id="${countryCode}" onclick="clickCard('${countryCode}')">
             <div class="img-wrapper">
-                <img src="${countryFlag}" alt="flag" loading="lazy">
+                <img src="${countryFlag}" alt="flag">
             </div>
             <div class="text-wrapper">
                 <h3>${countryName}</h3>
