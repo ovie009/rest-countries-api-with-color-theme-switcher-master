@@ -215,7 +215,7 @@ window.addEventListener("scroll", function(){
         //if st is less than or equal to 0, let lastScrollTop be equal to 0, else let it be equal to st
         lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
 
-        if ( (lastCardPosition - st) < (window.innerHeight + 200) && loadLimit <= numberOfCountries) {
+        if ( (lastCardPosition - st) < (window.innerHeight + 500) && loadLimit <= numberOfCountries) {
             console.log('close to the bottom');
             loadLimit += 25;
             countries = searchCountry(searchValue, countries); // search countries
