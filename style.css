@@ -6,7 +6,7 @@
     --lightModeHover: lightblue;
     --darkModeBackground : hsl(207, 26%, 17%);
     --darkModeElements: hsl(209, 23%, 22%);
-    --darkModeInput: hsl(209, 23%, 22%);
+    --darkModeInput: hsl(0, 0%, 52%);
     --darkModeText: hsl(0, 0%, 100%);
     --darkModeHover: teal;
     --background : var(--darkModeBackground);
@@ -470,4 +470,28 @@ select:-webkit-autofill:focus {
   border: none;
   -webkit-text-fill-color: white;
   box-shadow: 0 0 0px 1000px var(--elements) inset;
+}
+
+/* custom scroll bar */
+/* custom scrollbar */
+::-webkit-scrollbar{
+    width: 10px;
+    border-radius: 50%;
+    margin: 30px 0;
+}
+
+::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: var(--input);
+    border-radius: 5px;
+    box-sizing: border-box;
+    /* border: 2px solid var(--themeColor4); */
+    width: 100%;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background-color: var(--text);
 }
